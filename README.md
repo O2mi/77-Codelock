@@ -166,3 +166,13 @@ qb-codedoors/
 
 Door states used: `0 UNLOCKED`, `1 LOCKED`, `4 FORCE_LOCKED_THIS_FRAME`, `6 FORCE_CLOSED_THIS_FRAME`
 (see the [FiveM native reference](https://docs.fivem.net/natives/?_0x6BAB9442830C7F53)).
+
+
+---
+## Photo
+
+
+<img width="2560" height="1440" alt="FiveM FiveM exe Screenshot 2026 09 18 - 17 43 10 36" src="https://github.com/user-attachments/assets/ab2ad625-8653-496d-ada2-f68184f6cb1c" />
+
+
+---
