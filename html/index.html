@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>77-codedoors</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="app" class="hidden">
+
+    <!-- ══════════════════════════ ADMIN PANEL ══════════════════════════ -->
+    <section id="panel" class="panel hidden">
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-mark">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                        <path d="M6 21V4.5A1.5 1.5 0 0 1 7.5 3h7A1.5 1.5 0 0 1 16 4.5V21" stroke-linecap="round"/>
+                        <path d="M3 21h18" stroke-linecap="round"/>
+                        <circle cx="13.2" cy="11.6" r="1.15" fill="currentColor" stroke="none"/>
+                    </svg>
+                </div>
+                <div class="brand-text">
+                    <h1>Door Locks</h1>
+                    <span>77-codedoors</span>
+                </div>
+            </div>
+
+            <nav class="nav">
+                <button class="nav-item is-active" data-view="list">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 6h16M4 12h16M4 18h10" stroke-linecap="round"/></svg>
+                    <span>Door list</span>
+                </button>
+                <button class="nav-item" data-view="create">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+                    <span>New lock</span>
+                </button>
+                <button class="nav-item" data-view="help">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 16.6v.01M12 13c0-1.2 1.6-1.5 1.6-3A1.7 1.7 0 0 0 12 8.4a1.8 1.8 0 0 0-1.8 1.8" stroke-linecap="round"/></svg>
+                    <span>How it works</span>
+                </button>
+            </nav>
+
+            <div class="stats">
+                <div class="stat">
+                    <span id="stat-total">0</span>
+                    <small>locks</small>
+                </div>
+                <div class="stat">
+                    <span id="stat-locked" class="ok">0</span>
+                    <small>locked</small>
+                </div>
+                <div class="stat">
+                    <span id="stat-open" class="warn">0</span>
+                    <small>unlocked</small>
+                </div>
+            </div>
+
+            <div class="sidebar-foot">
+                <p>Look at a door and press <kbd>E</kbd> to add it to a lock.</p>
+            </div>
+        </aside>
+
+        <main class="content">
+            <!-- ── door list ─────────────────────────────────────────── -->
+            <div id="view-list" class="view">
+                <header class="topbar">
+                    <div class="search">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5" stroke-linecap="round"/></svg>
+                        <input id="search" type="text" placeholder="Search locks, zones or codes…" autocomplete="off" />
+                    </div>
+                    <div class="filters" id="filters">
+                        <button class="chip is-active" data-filter="all">All</button>
+                        <button class="chip" data-filter="locked">Locked</button>
+                        <button class="chip" data-filter="unlocked">Unlocked</button>
+                    </div>
+                    <button class="btn btn-primary" id="btn-new">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+                        New lock
+                    </button>
+                </header>
+
+                <div class="rows" id="rows"></div>
+
+                <div class="empty hidden" id="empty">
+                    <div class="empty-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 21V4.5A1.5 1.5 0 0 1 7.5 3h7A1.5 1.5 0 0 1 16 4.5V21" stroke-linecap="round"/><path d="M3 21h18" stroke-linecap="round"/></svg>
+                    </div>
+                    <h3>No locks yet</h3>
+                    <p>Walk up to a door, look at it and press <kbd>E</kbd> — or hit <strong>New lock</strong> to start the creator.</p>
+                </div>
+            </div>
+
+            <!-- ── create / edit ─────────────────────────────────────── -->
+            <div id="view-form" class="view hidden">
+                <header class="topbar">
+                    <div class="title-block">
+                        <h2 id="form-title">New door lock</h2>
+                        <span id="form-sub">Captured doors are listed on the right.</span>
+                    </div>
+                    <div class="spacer"></div>
+                    <button class="btn btn-ghost" id="form-cancel">Cancel</button>
+                    <button class="btn btn-primary" id="form-save">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        Save lock
+                    </button>
+                </header>
+
+                <div class="form-grid">
+                    <div class="card">
+                        <h3>Lock details</h3>
+
+                        <label class="field">
+                            <span>Name</span>
+                            <input id="f-name" type="text" maxlength="40" placeholder="Legion Square Garage" />
+                        </label>
+
+                        <div class="field">
+                            <span>Door type</span>
+                            <div class="segmented" id="f-type">
+                                <button data-type="door">Single</button>
+                                <button data-type="double">Double</button>
+                                <button data-type="gate">Gate</button>
+                                <button data-type="garage">Garage</button>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <span>Access code</span>
+                            <div class="pin-input" id="f-pin">
+                                <input type="text" inputmode="numeric" maxlength="1" autocomplete="off" />
+                                <input type="text" inputmode="numeric" maxlength="1" autocomplete="off" />
+                                <input type="text" inputmode="numeric" maxlength="1" autocomplete="off" />
+                                <input type="text" inputmode="numeric" maxlength="1" autocomplete="off" />
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <span>Auto close <output id="f-autoclose-val">30 s</output></span>
+                            <input id="f-autoclose" type="range" min="5" max="300" step="5" value="30" />
+                        </div>
+
+                        <div class="field">
+                            <span>Use distance <output id="f-distance-val">2.5 m</output></span>
+                            <input id="f-distance" type="range" min="1" max="10" step="0.5" value="2.5" />
+                        </div>
+
+                        <div class="switches">
+                            <label class="switch">
+                                <input type="checkbox" id="f-holdopen" />
+                                <span class="track"><span class="thumb"></span></span>
+                                <span class="switch-text">
+                                    <strong>Stay open while unlocked</strong>
+                                    <small>Gates and garage doors hold in the open position.</small>
+                                </span>
+                            </label>
+                            <label class="switch">
+                                <input type="checkbox" id="f-auto" />
+                                <span class="track"><span class="thumb"></span></span>
+                                <span class="switch-text">
+                                    <strong>Sliding / rolling door</strong>
+                                    <small>The game animates this door instead of swinging it.</small>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>
+                            Doors in this lock
+                            <small id="f-leafcount">0 / 4</small>
+                        </h3>
+
+                        <ul class="leaves" id="f-leaves"></ul>
+
+                        <div class="card-actions">
+                            <button class="btn btn-secondary" id="f-capture">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3.2"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3" stroke-linecap="round"/></svg>
+                                Look at doors
+                            </button>
+                        </div>
+
+                        <p class="note">
+                            Aim at a door and press <kbd>E</kbd> to add it. Use this for both leaves of a
+                            double door, gate pairs, or a garage with several roll-up doors.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── help ──────────────────────────────────────────────── -->
+            <div id="view-help" class="view hidden">
+                <header class="topbar">
+                    <div class="title-block">
+                        <h2>How it works</h2>
+                        <span>Everything runs on GTA's native door system.</span>
+                    </div>
+                </header>
+
+                <div class="help-grid">
+                    <div class="card">
+                        <h3>Creating a lock</h3>
+                        <ol class="steps-list">
+                            <li><span>1</span> Look at a door and press <kbd>E</kbd>, or open <strong>New lock</strong>.</li>
+                            <li><span>2</span> Add every door leaf that should share the code (up to 4), then press <kbd>Enter</kbd>.</li>
+                            <li><span>3</span> Pick a type, a 4-digit code and an auto-close timer, then save.</li>
+                        </ol>
+                    </div>
+                    <div class="card">
+                        <h3>For players</h3>
+                        <ul class="steps-list">
+                            <li><span>·</span> Aim at the door, press <kbd>E</kbd> and type the 4-digit code.</li>
+                            <li><span>·</span> The door unlocks for everyone and closes itself again (30s by default).</li>
+                            <li><span>·</span> Anyone who knows the current code can set a new one from the keypad.</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>Notes</h3>
+                        <ul class="steps-list">
+                            <li><span>·</span> Codes are checked on the server — they never reach a client unless you are an admin.</li>
+                            <li><span>·</span> Locks are stored in <strong>doors.json</strong> and reloaded on start.</li>
+                            <li><span>·</span> The aim key is <kbd>E</kbd>; players can rebind it in GTA key bindings.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <button class="close" id="btn-close" title="Close (Esc)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/></svg>
+        </button>
+    </section>
+
+    <!-- ══════════════════════════ KEYPAD ══════════════════════════ -->
+    <section id="keypad" class="keypad hidden">
+        <div class="kp-card">
+            <div class="kp-head">
+                <span class="badge" id="kp-type">Door</span>
+                <h2 id="kp-name">Door</h2>
+                <p id="kp-zone"></p>
+            </div>
+
+            <div class="kp-steps hidden" id="kp-steps">
+                <span class="kp-step is-active" data-step="0">Current code</span>
+                <span class="kp-step" data-step="1">New code</span>
+                <span class="kp-step" data-step="2">Confirm</span>
+            </div>
+
+            <p class="kp-label" id="kp-label">Enter access code</p>
+
+            <div class="kp-dots" id="kp-dots"></div>
+            <p class="kp-error" id="kp-error">&nbsp;</p>
+
+            <div class="kp-pad" id="kp-pad">
+                <button data-key="1">1</button>
+                <button data-key="2">2</button>
+                <button data-key="3">3</button>
+                <button data-key="4">4</button>
+                <button data-key="5">5</button>
+                <button data-key="6">6</button>
+                <button data-key="7">7</button>
+                <button data-key="8">8</button>
+                <button data-key="9">9</button>
+                <button data-key="clear" class="muted">Clear</button>
+                <button data-key="0">0</button>
+                <button data-key="back" class="muted">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M9 5l-5 7 5 7M5 12h14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+            </div>
+
+            <div class="kp-actions">
+                <button class="btn btn-primary" id="kp-submit">Unlock</button>
+                <button class="btn btn-ghost" id="kp-change">Change code</button>
+            </div>
+
+            <p class="kp-hint" id="kp-hint">Press <kbd>Esc</kbd> to close</p>
+        </div>
+    </section>
+
+    <div id="toasts" class="toasts"></div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
