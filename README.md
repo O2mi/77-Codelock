@@ -170,10 +170,15 @@ Door states used: `0 UNLOCKED`, `1 LOCKED`, `4 FORCE_LOCKED_THIS_FRAME`, `6 FORC
 
 ---
 ## Photo
-
+*  /doors [you can tp or change code or see or delete ] *
+<img width="1023" height="681" alt="image" src="https://github.com/user-attachments/assets/2550e2e8-7c08-41d6-adf7-ff2be8ffac9e" />
+*  press E at any door hust by looking  *
 <img width="2560" height="1440" alt="FiveM FiveM exe Screenshot 2026 09 18 - 17 42 48 99" src="https://github.com/user-attachments/assets/ae56454d-0623-494c-8626-aecdf6294ebd" />
+*  put code and name for the playes to see and save  *
 <img width="2560" height="1440" alt="FiveM FiveM exe Screenshot 2026 09 18 - 17 42 54 75" src="https://github.com/user-attachments/assets/358f7bb5-5cdc-41ac-8c75-ee0a65b7c6a4" />
+*  if you press alt at the door you can see the status of the doors  *
 <img width="2560" height="1440" alt="FiveM FiveM exe Screenshot 2026 09 18 - 17 43 10 36" src="https://github.com/user-attachments/assets/9e326225-47c7-4ff4-85dd-7dd802aa54b5" />
+*  the playes can put the code and change  *
 <img width="2560" height="1440" alt="FiveM FiveM exe Screenshot 2026 09 18 - 17 43 13 36" src="https://github.com/user-attachments/assets/fdea3737-8919-4a8d-b6be-57e82b52e6ea" />
 
 
